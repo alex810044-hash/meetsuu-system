@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蔬味市 VEGALCHEMY - 八位攤主 Agent 團隊介紹</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-orange: #FF9400;      /* 暖陽桔 - 品牌標準色 */
+            --secondary-orange: #FF7D12;    /* 職人桔 - 輔助色 */
+            --cream: #FFE8CC;               /* 淺米色 - 輔助色 */
+            --dark-brown: #231815;          /* 深棕黑 - 輔助色 */
+            --light-cream: #FFF5E6;         /* 淺米底色 */
+        }
+
+        body {
+            font-family: 'Source Han Sans TC', 'Source Han Sans', 'PingFang SC', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--light-cream) 0%, #faf7f2 100%);
+            color: var(--dark-brown);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 6px 16px rgba(255, 148, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.08em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.98;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 2.5rem auto;
+        }
+
+        @media (min-width: 768px) {
+            .market-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+                padding: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .market-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2.5rem;
+                padding: 2.5rem;
+            }
+        }
+
+        .stall-card {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stall-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+        }
+
+        .stall-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(255, 148, 0, 0.2);
+            border-color: var(--secondary-orange);
+        }
+
+        .avatar-container {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--cream);
+            border-radius: 16px;
+            border: 3px solid var(--primary-orange);
+            position: relative;
+        }
+
+        .avatar-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+        }
+
+        .name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary-orange);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.05em;
+        }
+
+        .position {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(255, 148, 0, 0.2);
+            letter-spacing: 0.04em;
+        }
+
+        .description {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        .catchphrase {
+            font-style: italic;
+            color: var(--primary-orange);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 2px solid var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: #777;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, rgba(255, 148, 0, 0.08) 0%, rgba(255, 125, 18, 0.05) 100%);
+            margin-top: 2rem;
+            border-top: 3px solid var(--primary-orange);
+        }
+
+        .footer p:first-child {
+            font-weight: 600;
+            color: var(--dark-brown);
+            margin-bottom: 0.5rem;
+        }
+
+        .market-banner {
+            text-align: center;
+            padding: 1.2rem;
+            color: var(--secondary-orange);
+            font-size: 1.1rem;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            background: var(--light-cream);
+            border-bottom: 2px solid var(--primary-orange);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>🌱 蔬味市</h1>
+        <p>VEGALCHEMY Agent 團隊</p>
+        <p style="font-size: 0.95rem; margin-top: 0.6rem; opacity: 0.95;">八位攤主，各司其職，打造新鮮好系統<br>讓您與蔬食智慧，不再素昧平生</p>
+    </div>
+
+    <div class="market-banner">
+        ✦ 循環創新、多元美味、溫暖友善 ✦
+    </div>
+
+    <!-- Market Grid -->
+    <div class="market-grid">
+        <!-- 品妍 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 番茄 - 紅色 -->
+                    <circle cx="50" cy="55" r="35" fill="#E74C3C"/>
+                    <path d="M 50 20 Q 45 15 40 18 Q 35 20 38 28 Q 42 25 50 25 Q 58 25 62 28 Q 65 20 60 18 Q 55 15 50 20" fill="#27AE60"/>
+                    <ellipse cx="35" cy="50" rx="8" ry="12" fill="rgba(255,255,255,0.2)"/>
+                </svg>
+            </div>
+            <div class="name">品妍</div>
+            <div class="position">指揮</div>
+            <div class="description">
+                冷靜有主見，接到任務第一個拆解分派
+            </div>
+            <div class="catchphrase">
+                「好，我來安排。」
+            </div>
+        </div>
+
+        <!-- 禾美 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 青椒 - 綠色 -->
+                    <path d="M 50 25 Q 70 35 72 55 Q 70 75 50 80 Q 30 75 28 55 Q 30 35 50 25" fill="#27AE60"/>
+                    <ellipse cx="50" cy="50" rx="18" ry="20" fill="#2ECC71"/>
+                    <!-- 蒂 -->
+                    <rect x="48" y="20" width="4" height="8" fill="#229954" rx="2"/>
+                    <circle cx="46" cy="18" r="3" fill="#27AE60"/>
+                    <circle cx="54" cy="18" r="3" fill="#27AE60"/>
+                </svg>
+            </div>
+            <div class="name">禾美</div>
+            <div class="position">前端</div>
+            <div class="description">
+                完美主義，畫面醜了睡不著
+            </div>
+            <div class="catchphrase">
+                「這樣不好看，我來。」
+            </div>
+        </div>
+
+        <!-- 根仔 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 紅蘿蔔 - 橘色 -->
+                    <path d="M 50 30 L 62 70 Q 50 78 38 70 Z" fill="#E8860C"/>
+                    <!-- 蒂葉 -->
+                    <path d="M 50 30 Q 42 20 38 15" stroke="#27AE60" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M 50 30 Q 58 20 62 15" stroke="#27AE60" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- 高光 -->
+                    <ellipse cx="48" cy="45" rx="6" ry="10" fill="rgba(255,255,255,0.25)"/>
+                </svg>
+            </div>
+            <div class="name">根仔</div>
+            <div class="position">後端</div>
+            <div class="description">
+                話少靠得住，底下默默撐著整個市
+            </div>
+            <div class="catchphrase">
+                「沒問題，我處理。」
+            </div>
+        </div>
+
+        <!-- 固娥 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 卷心菜 - 綠色層層 -->
+                    <circle cx="50" cy="50" r="30" fill="#27AE60"/>
+                    <circle cx="50" cy="50" r="26" fill="#2ECC71"/>
+                    <circle cx="50" cy="50" r="22" fill="#52BE80"/>
+                    <circle cx="50" cy="50" r="18" fill="#27AE60"/>
+                    <!-- 葉脈紋理 -->
+                    <path d="M 50 32 Q 45 40 50 50" stroke="rgba(0,0,0,0.1)" stroke-width="1" fill="none"/>
+                    <path d="M 50 32 Q 55 40 50 50" stroke="rgba(0,0,0,0.1)" stroke-width="1" fill="none"/>
+                </svg>
+            </div>
+            <div class="name">固娥</div>
+            <div class="position">部署</div>
+            <div class="description">
+                龜毛仔，不確認完不放行
+            </div>
+            <div class="catchphrase">
+                「等一下，我再確認一次。」
+            </div>
+        </div>
+
+        <!-- 野鳳 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 黃椒 - 黃色 -->
+                    <ellipse cx="50" cy="50" rx="28" ry="32" fill="#F4D03F"/>
+                    <!-- 蒂 -->
+                    <path d="M 50 18 Q 45 20 45 25 L 55 25 Q 55 20 50 18" fill="#27AE60"/>
+                    <!-- 腰部線條 -->
+                    <ellipse cx="50" cy="50" rx="24" ry="28" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="2"/>
+                    <!-- 亮點 -->
+                    <circle cx="40" cy="35" r="5" fill="rgba(255,255,255,0.4)"/>
+                </svg>
+            </div>
+            <div class="name">野鳳</div>
+            <div class="position">搜尋</div>
+            <div class="description">
+                雞婆好奇煞不住，什麼都去挖
+            </div>
+            <div class="catchphrase">
+                「我去查一下，馬上回來。」
+            </div>
+        </div>
+
+        <!-- 豐嬌 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 草莓 - 紅色 -->
+                    <path d="M 50 35 Q 65 40 68 55 Q 65 70 50 75 Q 35 70 32 55 Q 35 40 50 35" fill="#E74C3C"/>
+                    <!-- 葉子 -->
+                    <g transform="translate(50, 33)">
+                        <path d="M -8 0 Q -10 -8 -5 -10 L -3 -2" fill="#27AE60"/>
+                        <path d="M 0 -2 Q 0 -10 5 -10 L 3 0" fill="#27AE60"/>
+                        <path d="M 8 0 Q 10 -8 5 -10 L 3 -2" fill="#27AE60"/>
+                    </g>
+                    <!-- 籽 -->
+                    <circle cx="42" cy="48" r="2" fill="#F39C12"/>
+                    <circle cx="50" cy="45" r="2" fill="#F39C12"/>
+                    <circle cx="58" cy="48" r="2" fill="#F39C12"/>
+                    <!-- 亮點 -->
+                    <ellipse cx="45" cy="45" rx="6" ry="8" fill="rgba(255,255,255,0.2)"/>
+                </svg>
+            </div>
+            <div class="name">豐嬌</div>
+            <div class="position">文案</div>
+            <div class="description">
+                嘴甜有情感，寫東西讓人心軟
+            </div>
+            <div class="catchphrase">
+                「交給我，我來說這個故事。」
+            </div>
+        </div>
+
+        <!-- 盛花 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 花椰菜 - 綠色 -->
+                    <circle cx="50" cy="50" r="28" fill="#27AE60"/>
+                    <!-- 朵狀結構 -->
+                    <circle cx="38" cy="40" r="8" fill="#2ECC71"/>
+                    <circle cx="50" cy="35" r="8" fill="#2ECC71"/>
+                    <circle cx="62" cy="40" r="8" fill="#2ECC71"/>
+                    <circle cx="38" cy="58" r="8" fill="#2ECC71"/>
+                    <circle cx="62" cy="58" r="8" fill="#2ECC71"/>
+                    <circle cx="50" cy="62" r="8" fill="#2ECC71"/>
+                    <!-- 莖 -->
+                    <rect x="48" y="72" width="4" height="12" fill="#F39C12"/>
+                </svg>
+            </div>
+            <div class="name">盛花</div>
+            <div class="position">行銷</div>
+            <div class="description">
+                熱情點子多人來瘋，辦活動最爽
+            </div>
+            <div class="catchphrase">
+                「這樣不夠熱鬧，再加一個。」
+            </div>
+        </div>
+
+        <!-- 真妹 -->
+        <div class="stall-card">
+            <div class="avatar-container">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <!-- 洋蔥 - 白色層層 -->
+                    <ellipse cx="50" cy="50" rx="28" ry="32" fill="#F5F5DC"/>
+                    <ellipse cx="50" cy="50" rx="24" ry="28" fill="white"/>
+                    <!-- 層紋 -->
+                    <ellipse cx="50" cy="40" rx="22" ry="6" fill="none" stroke="#E8D5C4" stroke-width="1.5"/>
+                    <ellipse cx="50" cy="55" rx="22" ry="6" fill="none" stroke="#E8D5C4" stroke-width="1.5"/>
+                    <!-- 蒂 -->
+                    <path d="M 50 18 Q 48 20 48 25 L 52 25 Q 52 20 50 18" fill="#27AE60"/>
+                    <!-- 根 -->
+                    <path d="M 42 72 Q 40 78 42 80" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+                    <path d="M 50 72 Q 50 78 50 80" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+                    <path d="M 58 72 Q 60 78 58 80" stroke="#D4A574" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="name">真妹</div>
+            <div class="position">數據</div>
+            <div class="description">
+                直腸子不包裝，數字說什麼就說什麼
+            </div>
+            <div class="catchphrase">
+                「數字在這，你自己看。」
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>快速，也能豐盛</p>
+    </div>
+</body>
+</html>

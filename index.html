@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蔬味平生 VEGALCHEMY - 中控中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-orange: #FF9400;      /* 暖陽桔 - 品牌標準色 */
+            --secondary-orange: #FF7D12;    /* 職人桔 - 輔助色 */
+            --cream: #FFE8CC;               /* 淺米色 - 輔助色 */
+            --dark-brown: #231815;          /* 深棕黑 - 輔助色 */
+            --light-cream: #FFF5E6;         /* 淺米底色 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Sans TC', 'Source Han Sans', 'PingFang SC', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--light-cream) 0%, #faf7f2 100%);
+            color: var(--dark-brown);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 6px 16px rgba(255, 148, 0, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-brand {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .header-brand-en {
+            font-size: 0.85rem;
+            opacity: 0.95;
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
+        .header-info {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .header-time {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.2rem;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            width: 100%;
+        }
+
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtext {
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        /* Grid System */
+        .departments-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .departments-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.8rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .departments-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        /* Department Card */
+        .dept-card {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 1.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+        }
+
+        .dept-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(255, 148, 0, 0.2);
+            border-color: var(--secondary-orange);
+        }
+
+        .dept-card.clicked {
+            pointer-events: none;
+        }
+
+        .dept-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .dept-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary-orange);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .dept-tools {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .dept-tool-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .dept-tool-item::before {
+            content: '▸';
+            color: var(--primary-orange);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Building Overlay */
+        .building-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 148, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border-radius: 13px;
+            backdrop-filter: blur(4px);
+        }
+
+        .dept-card.show-building .building-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .building-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .building-emoji {
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Stall Members Footer */
+        .stall-members {
+            background: white;
+            border-top: 3px solid var(--primary-orange);
+            padding: 1.8rem 1rem;
+            margin-top: auto;
+        }
+
+        .stall-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .members-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+
+        .member-badge {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 148, 0, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .member-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.25);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .header-info {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .header-brand {
+                font-size: 1.1rem;
+            }
+
+            .welcome-text {
+                font-size: 1.25rem;
+            }
+
+            .dept-card {
+                min-height: 180px;
+                padding: 1.5rem 1.2rem;
+            }
+
+            .dept-icon {
+                font-size: 2rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .dept-name {
+                font-size: 1.1rem;
+            }
+
+            .building-text {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <div class="header-brand">🌿 蔬味平生</div>
+                <div class="header-brand-en">VEGALCHEMY</div>
+            </div>
+            <div class="header-info">
+                <div class="header-time">
+                    <div id="current-date">2024年4月20日</div>
+                    <div id="current-time">10:30:45</div>
+                </div>
+                <div class="header-user">
+                    <div class="user-avatar">仁</div>
+                    <div>
+                        <div style="font-weight: 600;">仁哥</div>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">系統管理員</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="welcome-section">
+            <div class="welcome-text">歡迎進入中控中心</div>
+            <div class="welcome-subtext">選擇您要進入的部門系統</div>
+        </div>
+
+        <!-- Departments Grid -->
+        <div class="departments-grid">
+            <!-- 品牌行銷部 -->
+            <div class="dept-card" data-dept="brand-marketing">
+                <div>
+                    <div class="dept-icon">🌿</div>
+                    <div class="dept-name">品牌行銷部</div>
+                    <div class="dept-tools">
+                        <div class="dept-tool-item">文案AI生成</div>
+                        <div class="dept-tool-item">IG/LINE後台</div>
+                    </div>
+                </div>
+                <div class="building-overlay">
+                    <div class="building-emoji">🔨</div>
+                    <div class="building-text">建置中</div>
+                </div>
+            </div>
+
+            <!-- 攤位營運部 -->
+            <div class="dept-card" data-dept="stall-operation">
+                <div>
+                    <div class="dept-icon">🏮</div>
+                    <div class="dept-name">攤位營運部</div>
+                    <div class="dept-tools">
+                        <div class="dept-tool-item">POS銷售系統</div>
+                        <div class="dept-tool-item">活動場地管理</div>
+                    </div>
+                </div>
+                <div class="building-overlay">
+                    <div class="building-emoji">🔨</div>
+                    <div class="building-text">建置中</div>
+                </div>
+            </div>
+
+            <!-- 廠商聯盟部 -->
+            <div class="dept-card" data-dept="vendor-alliance">
+                <div>
+                    <div class="dept-icon">🤝</div>
+                    <div class="dept-name">廠商聯盟部</div>
+                    <div class="dept-tools">
+                        <div class="dept-tool-item">廠商資料填寫</div>
+                        <div class="dept-tool-item">媒合排程</div>
+                    </div>
+                </div>
+                <div class="building-overlay">
+                    <div class="building-emoji">🔨</div>
+                    <div class="building-text">建置中</div>
+                </div>
+            </div>
+
+            <!-- 客服部 -->
+            <div class="dept-card" data-dept="customer-service">
+                <div>
+                    <div class="dept-icon">💬</div>
+                    <div class="dept-name">客服部</div>
+                    <div class="dept-tools">
+                        <div class="dept-tool-item">LINE AI客服</div>
+                        <div class="dept-tool-item">顧客回饋追蹤</div>
+                    </div>
+                </div>
+                <div class="building-overlay">
+                    <div class="building-emoji">🔨</div>
+                    <div class="building-text">建置中</div>
+                </div>
+            </div>
+
+            <!-- 數據分析部 -->
+            <div class="dept-card" data-dept="data-analysis">
+                <div>
+                    <div class="dept-icon">📊</div>
+                    <div class="dept-name">數據分析部</div>
+                    <div class="dept-tools">
+                        <div class="dept-tool-item">銷售分析儀表板</div>
+                        <div class="dept-tool-item">行銷成效追蹤</div>
+                    </div>
+                </div>
+                <div class="building-overlay">
+                    <div class="building-emoji">🔨</div>
+                    <div class="building-text">建置中</div>
+                </div>
+            </div>
+
+            <!-- 系統管理 -->
+            <div class="dept-card" data-dept="system-admin">
+                <div>
+                    <div class="dept-icon">⚙️</div>
+                    <div class="dept-name">系統管理</div>
+                    <div class="dept-tools">
+                        <div class="dept-tool-item">帳號權限管理</div>
+                        <div class="dept-tool-item">系統設定</div>
+                    </div>
+                </div>
+                <div class="building-overlay">
+                    <div class="building-emoji">🔨</div>
+                    <div class="building-text">建置中</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Stall Members Footer -->
+    <footer class="stall-members">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+            <div class="stall-title">🌱 八位攤主團隊</div>
+            <a href="team.html" style="background: linear-gradient(135deg, #FF9400 0%, #FF7D12 100%); color: white; padding: 0.5rem 1.2rem; border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; box-shadow: 0 2px 8px rgba(255, 148, 0, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(255, 148, 0, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(255, 148, 0, 0.15)';">查看詳情 →</a>
+        </div>
+        <div class="members-list">
+            <div class="member-badge">品妍</div>
+            <div class="member-badge">禾美</div>
+            <div class="member-badge">根仔</div>
+            <div class="member-badge">固娥</div>
+            <div class="member-badge">野鳳</div>
+            <div class="member-badge">豐嬌</div>
+            <div class="member-badge">盛花</div>
+            <div class="member-badge">真妹</div>
+        </div>
+    </footer>
+
+    <script>
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+
+            // Format date
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const dateStr = `${year}年${month}月${date}日`;
+
+            // Format time
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeStr = `${hours}:${minutes}:${seconds}`;
+
+            document.getElementById('current-date').textContent = dateStr;
+            document.getElementById('current-time').textContent = timeStr;
+        }
+
+        // Update on page load
+        updateDateTime();
+
+        // Update every second
+        setInterval(updateDateTime, 1000);
+
+        // Card click handlers
+        document.querySelectorAll('.dept-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove showing state from other cards
+                document.querySelectorAll('.dept-card').forEach(c => {
+                    if (c !== this) c.classList.remove('show-building');
+                });
+
+                // Toggle showing state on this card
+                this.classList.toggle('show-building');
+            });
+        });
+
+        // Close overlay when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dept-card')) {
+                document.querySelectorAll('.dept-card').forEach(card => {
+                    card.classList.remove('show-building');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
