@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指揮中樞 - 蔬味平生中控中心</title>
+    <style>
+        :root {
+            --primary-orange: #FF9400;
+            --secondary-orange: #FF7D12;
+            --cream: #FFE8CC;
+            --dark-brown: #231815;
+            --light-cream: #FFF5E6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Sans TC', 'PingFang SC', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--light-cream) 0%, #faf7f2 100%);
+            color: var(--dark-brown);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-orange);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-input-area {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.2);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 148, 0, 0.3);
+        }
+
+        .tasks-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background: white;
+            border-left: 5px solid var(--primary-orange);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            margin-bottom: 0.25rem;
+        }
+
+        .task-time {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">🌿 指揮中樞 - 品妍</div>
+            <div class="header-buttons">
+                <button class="btn" onclick="goBack()">← 返回中控中心</button>
+                <button class="btn" onclick="logout()">登出</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="section-title">📋 任務管理中心</div>
+
+        <div class="task-input-area">
+            <h3 style="margin-bottom: 1rem; color: var(--dark-brown);">新增任務</h3>
+            <div class="input-group">
+                <input type="text" id="taskInput" placeholder="輸入任務描述...">
+                <button class="btn-add" onclick="addTask()">+ 新增任務</button>
+            </div>
+        </div>
+
+        <div id="tasksList" class="tasks-list"></div>
+    </div>
+
+    <script>
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const tasksList = document.getElementById('tasksList');
+
+            if (tasks.length === 0) {
+                tasksList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>目前沒有任務，新增一個開始吧！</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tasksList.innerHTML = tasks.map((task, index) => `
+                <div class="task-card">
+                    <div class="task-content">
+                        <div class="task-name">${task.name}</div>
+                        <div class="task-time">建立於 ${task.time}</div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-small btn-delete" onclick="deleteTask(${index})">刪除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const taskName = input.value.trim();
+
+            if (!taskName) {
+                alert('請輸入任務描述');
+                return;
+            }
+
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const now = new Date().toLocaleString('zh-TW');
+
+            tasks.push({
+                name: taskName,
+                time: now
+            });
+
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            input.value = '';
+            loadTasks();
+        }
+
+        function deleteTask(index) {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        loadTasks();
+    </script>
+</body>
+</html>

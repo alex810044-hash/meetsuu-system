@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端開發部 - 蔬味平生中控中心</title>
+    <style>
+        :root {
+            --primary-orange: #FF9400;
+            --secondary-orange: #FF7D12;
+            --cream: #FFE8CC;
+            --dark-brown: #231815;
+            --light-cream: #FFF5E6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Sans TC', 'PingFang SC', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--light-cream) 0%, #faf7f2 100%);
+            color: var(--dark-brown);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-orange);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dev-panel {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.1);
+        }
+
+        .dev-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dev-card {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.2);
+        }
+
+        .dev-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255, 148, 0, 0.3);
+        }
+
+        .dev-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dev-card-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .dev-card-desc {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .status-board {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.1);
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-weight: 600;
+        }
+
+        .status-value {
+            background: var(--cream);
+            color: var(--secondary-orange);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">💻 前端開發部 - 禾美</div>
+            <div class="header-buttons">
+                <button class="btn" onclick="goBack()">← 返回中控中心</button>
+                <button class="btn" onclick="logout()">登出</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="section-title">🎨 開發工作面板</div>
+
+        <div class="dev-panel">
+            <h3 style="margin-bottom: 1.5rem; color: var(--dark-brown);">開發工具</h3>
+            <div class="dev-grid">
+                <div class="dev-card">
+                    <div class="dev-card-icon">🎨</div>
+                    <div class="dev-card-name">UI 設計</div>
+                    <div class="dev-card-desc">介面設計</div>
+                </div>
+                <div class="dev-card">
+                    <div class="dev-card-icon">⚡</div>
+                    <div class="dev-card-name">性能優化</div>
+                    <div class="dev-card-desc">頁面加速</div>
+                </div>
+                <div class="dev-card">
+                    <div class="dev-card-icon">🔍</div>
+                    <div class="dev-card-name">Debug</div>
+                    <div class="dev-card-desc">問題追蹤</div>
+                </div>
+                <div class="dev-card">
+                    <div class="dev-card-icon">📱</div>
+                    <div class="dev-card-name">RWD 測試</div>
+                    <div class="dev-card-desc">響應式</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-board">
+            <h3 style="margin-bottom: 1.5rem; color: var(--dark-brown);">📊 開發狀態</h3>
+            <div class="status-item">
+                <span class="status-label">UI 設計進度</span>
+                <span class="status-value">進行中</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">RWD 適配</span>
+                <span class="status-value">完成</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">性能評分</span>
+                <span class="status-value">85/100</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">最後更新</span>
+                <span class="status-value" id="lastUpdate">今天</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        const now = new Date().toLocaleString('zh-TW');
+        document.getElementById('lastUpdate').textContent = now;
+    </script>
+</body>
+</html>

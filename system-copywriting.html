@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文案部 - 蔬味平生中控中心</title>
+    <style>
+        :root {
+            --primary-orange: #FF9400;
+            --secondary-orange: #FF7D12;
+            --cream: #FFE8CC;
+            --dark-brown: #231815;
+            --light-cream: #FFF5E6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Han Sans TC', 'PingFang SC', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--light-cream) 0%, #faf7f2 100%);
+            color: var(--dark-brown);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-orange);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-panel {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-brown);
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 148, 0, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.2);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 148, 0, 0.3);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .output-panel {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.1);
+        }
+
+        .output-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            margin-bottom: 1rem;
+        }
+
+        .generated-content {
+            background: #f9f9f9;
+            border-left: 5px solid var(--primary-orange);
+            padding: 1.5rem;
+            border-radius: 10px;
+            line-height: 1.8;
+            min-height: 150px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.75rem;
+            border: 2px solid var(--primary-orange);
+            background: white;
+            color: var(--primary-orange);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            background: var(--light-cream);
+        }
+
+        .btn-action.primary {
+            background: var(--primary-orange);
+            color: white;
+            border-color: var(--primary-orange);
+        }
+
+        .btn-action.primary:hover {
+            background: var(--secondary-orange);
+        }
+
+        .saved-list {
+            background: white;
+            border: 3px solid var(--primary-orange);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 148, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .saved-item {
+            padding: 1rem;
+            border-left: 4px solid var(--primary-orange);
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .saved-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .saved-info {
+            flex: 1;
+        }
+
+        .saved-title {
+            font-weight: 600;
+            color: var(--dark-brown);
+            margin-bottom: 0.25rem;
+        }
+
+        .saved-meta {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .saved-preview {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .btn-delete-small {
+            padding: 0.5rem 1rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-delete-small:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">📝 文案部 - 豐嬌</div>
+            <div class="header-buttons">
+                <button class="btn" onclick="goBack()">← 返回中控中心</button>
+                <button class="btn" onclick="logout()">登出</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="section-title">✨ AI 智慧文案生成系統</div>
+
+        <div class="content-grid">
+            <div class="input-panel">
+                <h3 style="margin-bottom: 1.5rem; color: var(--dark-brown);">📋 輸入資訊</h3>
+
+                <div class="form-group">
+                    <label class="form-label">目標客群</label>
+                    <select id="targetAudience">
+                        <option value="">選擇目標客群</option>
+                        <option value="上班族">上班族</option>
+                        <option value="學生">學生</option>
+                        <option value="家庭主婦">家庭主婦</option>
+                        <option value="健身愛好者">健身愛好者</option>
+                        <option value="素食者">素食者</option>
+                        <option value="忙碌媽媽">忙碌媽媽</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">產品名稱</label>
+                    <input type="text" id="productName" placeholder="輸入產品名稱（如：蔬味便當、沙拉盒等）">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">文案風格</label>
+                    <select id="style">
+                        <option value="溫暖親切">溫暖親切</option>
+                        <option value="專業嚴肅">專業嚴肅</option>
+                        <option value="有趣幽默">有趣幽默</option>
+                        <option value="激勵鼓舞">激勵鼓舞</option>
+                        <option value="簡潔直接">簡潔直接</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">額外需求（選填）</label>
+                    <textarea id="additionalInfo" placeholder="輸入任何特別的需求或強調重點..."></textarea>
+                </div>
+
+                <button class="btn-generate" onclick="generateCopywriting()">🚀 生成文案</button>
+            </div>
+
+            <div class="output-panel">
+                <div class="output-title">📄 生成的文案</div>
+                <div id="outputContent" class="generated-content">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>輸入資訊並點擊「生成文案」開始</p>
+                    </div>
+                </div>
+
+                <div class="action-buttons" id="actionButtons" style="display: none;">
+                    <button class="btn-action primary" onclick="copyCopywriting()">📋 複製文案</button>
+                    <button class="btn-action" onclick="saveCopywriting()">💾 保存文案</button>
+                    <button class="btn-action" onclick="clearOutput()">🗑️ 清除</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="saved-list">
+            <h3 style="margin-bottom: 1.5rem; color: var(--dark-brown);">📚 已保存的文案</h3>
+            <div id="savedList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <p>還沒有保存的文案</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const copywritingTemplates = {
+            '上班族': {
+                '溫暖親切': `親愛的上班族朋友，\n\n你是否每天忙於工作，卻忽略了自己的身體健康？{productName}為你精心準備，讓你在忙碌的工作中也能享受新鮮蔬食的美味。\n\n快速方便 • 營養滿分 • 美味不打折\n\n每一份都是用心製作，為了讓你在繁忙的日子裡，也能擁有一份溫暖的照顧。`,
+                '專業嚴肅': `{productName}專為忙碌上班族設計\n\n營養分析：\n- 高纖維含量：改善消化系統\n- 低熱量配方：維持健康體態\n- 優質蛋白質：增強工作體力\n\n品質保證：精選食材、新鮮配送、健康認證\n適合：快速午餐、健身餐食、日常營養補給`,
+                '有趣幽默': `上班族的救星來了！🎉\n\n{productName}：讓你的便當盒也能秀起來\n\n- 再也不用吃公司外送便當\n- 新鮮蔬食，讓你工作更有勁\n- 同事都會問你「你的便當哪裡買的？」\n\n快來加入蔬食上班族的行列！`,
+                '激勵鼓舞': `選擇{productName}，就是選擇更好的自己\n\n每一天，你都有機會做出更健康的選擇。新鮮的蔬食，不只是一份餐點，更是對自己健康的承諾。\n\n讓{productName}陪伴你，在忙碌中找到生活的美好。`,
+                '簡潔直接': `{productName}\n為上班族量身訂製的健康便當\n\n✓ 快速配送\n✓ 新鮮食材\n✓ 營養均衡\n✓ 口味選擇多\n\n立即訂購，享受健康便利`
+            },
+            '學生': {
+                '溫暖親切': `親愛的同學，\n\n在你的青春年代，營養對你有多重要？{productName}陪伴你度過每一個充實的日子，用新鮮蔬食點亮你的活力。\n\n學習需要能量，我們提供健康的選擇。`,
+                '專業嚴肅': `{productName} - 學生營養計劃\n\n針對學生需求設計：\n- 增強集中力的營養配方\n- 平衡的蛋白質與碳水化合物\n- 適合預算的價格\n\n讓你在學業上表現更出色`,
+                '有趣幽默': `學生族的新選擇：{productName}\n\n告別宿舍外送，來點真正健康的！\n你的媽媽會喜歡你吃{productName}\n（而且比便利店便宜）`,
+                '激勵鼓舞': `{productName}\n投資自己的健康，就是投資未來\n\n年輕就開始好好吃飯，\n長大後會感謝現在的自己`,
+                '簡潔直接': `學生必備：{productName}\n新鮮 • 便宜 • 營養\n下單即享學生優惠`
+            },
+            '家庭主婦': {
+                '溫暖親切': `親愛的媽媽，\n\n我們懂你有多忙。{productName}讓你不用每天為了家人的餐食而煩惱，新鮮蔬食配送到家，用愛照顧全家人的健康。\n\n簡單、方便、安心`,
+                '專業嚴肅': `為家庭營養把關的{productName}\n\n全家營養解決方案：\n- 新鮮有機食材\n- 營養學家推薦\n- 安全檢驗認證\n- 方便快速準備\n\n守護全家健康`,
+                '有趣幽默': `媽媽的福音：{productName}\n\n終於不用每天想「今天吃什麼」\n新鮮、方便、全家都讚賞`,
+                '激勵鼓舞': `每一次選擇{productName}\n都是為家人選擇更好的未來\n\n用愛做飯，用心選擇`,
+                '簡潔直接': `家庭營養首選：{productName}\n新鮮食材直送家門\n讓家人吃得健康放心`
+            },
+            '健身愛好者': {
+                '溫暖親切': `親愛的健身朋友，\n\n你的努力值得最好的營養補給。{productName}是為健身者設計的食物，高蛋白、低脂肪，讓你的每一分汗水都不白費。`,
+                '專業嚴肅': `{productName} - 運動營養夥伴\n\n為健身者優化的配方：\n- 高蛋白質含量：肌肉合成必需\n- 低碳水配選：減脂效果加倍\n- 完整胺基酸：快速恢復體力\n- 營養精準控制：每份營養資料清晰\n\n助你達成健身目標`,
+                '有趣幽默': `健身沒有秘訣，只有{productName}\n練得再兇，吃得要對\n選擇{productName}，馬甲線不遠了`,
+                '激勵鼓舞': `{productName}\n不只是食物，是你堅持的動力\n\n每一份都是為了更好的自己`,
+                '簡潔直接': `健身餐首選：{productName}\n蛋白質高 • 脂肪低 • 熱量清楚\n助力肌肉生長，加速體脂下降`
+            },
+            '素食者': {
+                '溫暖親切': `親愛的素食朋友，\n\n我們尊重你的選擇。{productName}用最新鮮的蔬菜、豆類和穀物，為你呈現美味與營養並存的素食文化。`,
+                '專業嚴肅': `{productName} - 完整素食營養\n\n素食營養專家認證：\n- 完整蛋白質組成\n- 充足鐵質與鈣質\n- 豐富纖維素含量\n- 維生素B12補充方案\n\n支持你的健康素食生活`,
+                '有趣幽默': `素食也很潮：{productName}\n證明美食與信念可以兼得`,
+                '激勵鼓舞': `選擇{productName}\n就是選擇更永續的生活方式\n愛地球，也愛自己`,
+                '簡潔直接': `素食新選擇：{productName}\n營養完整 • 美味純正 • 良心食物`
+            },
+            '忙碌媽媽': {
+                '溫暖親切': `親愛的媽媽，\n\n我們看見你的忙碌。{productName}讓你少一件煩心事，多一些陪伴家人的時間。新鮮、營養、安心。`,
+                '專業嚴肅': `{productName} - 忙碌家庭解決方案\n\n為時間緊張的媽媽設計：\n- 快速便捷的準備時間\n- 全家適用的營養配方\n- 無添加物的安心品質\n- 靈活的訂購計劃\n\n陪你度過忙碌的每一天`,
+                '有趣幽默': `媽媽的祕密武器：{productName}\n準時送來，省時又省心\n（給自己一個喘息的機會）`,
+                '激勵鼓舞': `不是超媽媽也沒關係\n有{productName}陪著，一樣很棒`,
+                '簡潔直接': `忙碌媽媽的選擇：{productName}\n新鮮直送 • 省時方便 • 全家營養`
+            }
+        };
+
+        let currentGeneratedContent = '';
+
+        function generateCopywriting() {
+            const targetAudience = document.getElementById('targetAudience').value;
+            const productName = document.getElementById('productName').value;
+            const style = document.getElementById('style').value;
+            const additionalInfo = document.getElementById('additionalInfo').value;
+
+            if (!targetAudience || !productName) {
+                alert('請填寫目標客群和產品名稱');
+                return;
+            }
+
+            let content = copywritingTemplates[targetAudience]?.[style] || '';
+            if (!content) {
+                content = copywritingTemplates[targetAudience]?.['溫暖親切'] || '';
+            }
+
+            content = content.replace(/{productName}/g, productName);
+
+            if (additionalInfo) {
+                content += `\n\n【額外重點】\n${additionalInfo}`;
+            }
+
+            currentGeneratedContent = content;
+            document.getElementById('outputContent').textContent = content;
+            document.getElementById('actionButtons').style.display = 'flex';
+        }
+
+        function copyCopywriting() {
+            navigator.clipboard.writeText(currentGeneratedContent).then(() => {
+                alert('✅ 文案已複製到剪貼簿');
+            });
+        }
+
+        function saveCopywriting() {
+            const targetAudience = document.getElementById('targetAudience').value;
+            const productName = document.getElementById('productName').value;
+
+            if (!currentGeneratedContent) {
+                alert('請先生成文案');
+                return;
+            }
+
+            const savedCopywritings = JSON.parse(localStorage.getItem('savedCopywritings')) || [];
+            const now = new Date().toLocaleString('zh-TW');
+
+            savedCopywritings.push({
+                id: Date.now(),
+                audience: targetAudience,
+                product: productName,
+                content: currentGeneratedContent,
+                savedTime: now
+            });
+
+            localStorage.setItem('savedCopywritings', JSON.stringify(savedCopywritings));
+            alert('✅ 文案已保存');
+            loadSavedCopywritings();
+        }
+
+        function clearOutput() {
+            document.getElementById('outputContent').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <p>輸入資訊並點擊「生成文案」開始</p>
+                </div>
+            `;
+            document.getElementById('actionButtons').style.display = 'none';
+            currentGeneratedContent = '';
+        }
+
+        function loadSavedCopywritings() {
+            const savedCopywritings = JSON.parse(localStorage.getItem('savedCopywritings')) || [];
+            const savedList = document.getElementById('savedList');
+
+            if (savedCopywritings.length === 0) {
+                savedList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>還沒有保存的文案</p>
+                    </div>
+                `;
+                return;
+            }
+
+            savedList.innerHTML = savedCopywritings.reverse().map(item => `
+                <div class="saved-item">
+                    <div class="saved-info">
+                        <div class="saved-title">${item.product} - ${item.audience}</div>
+                        <div class="saved-meta">保存於 ${item.savedTime}</div>
+                        <div class="saved-preview">${item.content.substring(0, 100)}...</div>
+                    </div>
+                    <button class="btn-delete-small" onclick="deleteSavedCopywriting(${item.id})">刪除</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteSavedCopywriting(id) {
+            let savedCopywritings = JSON.parse(localStorage.getItem('savedCopywritings')) || [];
+            savedCopywritings = savedCopywritings.filter(item => item.id !== id);
+            localStorage.setItem('savedCopywritings', JSON.stringify(savedCopywritings));
+            loadSavedCopywritings();
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        loadSavedCopywritings();
+    </script>
+</body>
+</html>

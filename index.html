@@ -335,8 +335,14 @@
     </style>
 </head>
 <body>
+    <script>
+    if (!localStorage.getItem('isLoggedIn')) {
+        window.location.href = 'login.html';
+    }
+    </script>
     <!-- Header -->
     <header class="header">
+        <button onclick="logout()" style="position: absolute; top: 1.5rem; right: 1rem; background: rgba(255, 255, 255, 0.25); color: white; padding: 0.5rem 1rem; border: 1px solid white; border-radius: 20px; cursor: pointer; font-weight: 600;">登出</button>
         <div class="header-content">
             <div>
                 <div class="header-brand">🌿 蔬味平生</div>
@@ -368,6 +374,7 @@
         <!-- Departments Grid -->
         <div class="departments-grid">
             <!-- 品妍 - 指揮中樞 -->
+            <a href="system-command.html" style="text-decoration: none; color: inherit;">
             <div class="dept-card" data-dept="pin-yan">
                 <div>
                     <div class="dept-icon">🌿</div>
@@ -383,8 +390,10 @@
                     <div class="building-text">建置中</div>
                 </div>
             </div>
+            </a>
 
             <!-- 禾美 - 前端開發部 -->
+            <a href="system-frontend.html" style="text-decoration: none; color: inherit;">
             <div class="dept-card" data-dept="he-mei">
                 <div>
                     <div class="dept-icon">💻</div>
@@ -400,8 +409,10 @@
                     <div class="building-text">建置中</div>
                 </div>
             </div>
+            </a>
 
             <!-- 根仔 - 後端系統部 -->
+            <a href="system-backend.html" style="text-decoration: none; color: inherit;">
             <div class="dept-card" data-dept="gen-zai">
                 <div>
                     <div class="dept-icon">⚙️</div>
@@ -417,6 +428,7 @@
                     <div class="building-text">建置中</div>
                 </div>
             </div>
+            </a>
 
             <!-- 固娥 - 品質管理部 -->
             <div class="dept-card" data-dept="gu-e">
@@ -453,6 +465,7 @@
             </div>
 
             <!-- 豐嬌 - 內容文案部 -->
+            <a href="system-copywriting.html" style="text-decoration: none; color: inherit;">
             <div class="dept-card" data-dept="feng-jiao">
                 <div>
                     <div class="dept-icon">📝</div>
@@ -468,6 +481,7 @@
                     <div class="building-text">建置中</div>
                 </div>
             </div>
+            </a>
 
             <!-- 盛花 - 品牌行銷部 -->
             <div class="dept-card" data-dept="sheng-hua">
@@ -571,6 +585,13 @@
                 });
             }
         });
+    </script>
+    <script>
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
     </script>
 </body>
 </html>
